@@ -14,8 +14,14 @@ const __dirname = path.dirname(__filename);
 // (в песочнице/превью можно переопределить переменной окружения BASE_PATH=/)
 const base = process.env.BASE_PATH ?? "/Coch-Site-V2/";
 
+// GitHub Pages публикует ветку "main" из папки "/docs",
+// поэтому сборка кладёт самодостаточный index.html именно туда.
+// (dist/ больше не используется; в репозитории хранится готовый результат.)
 export default defineConfig({
   base,
+  build: {
+    outDir: "docs",
+  },
   preview: {
     // превью-хост песочницы отличается от localhost — разрешаем любые хосты
     allowedHosts: true,
