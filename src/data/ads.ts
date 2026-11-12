@@ -8,14 +8,14 @@ export const DEFAULT_ADS_RAW: AdsConfigRaw = {
   _инструкция: "Настройки рекламы: 3 блока слева и 3 блока справа. Можно указывать внешнюю ссылку (https://...) или путь к файлу в папке ads/ (например ads/my-photo.jpg или ads/my-gif.gif).",
   слева: {
     картинки: [
-      "ads/left-1.svg",
-      "ads/left-2.svg",
-      "ads/left-3.svg",
+      "ads/Paraziti.jpg",
+      "ads/Skalaboga.jpg",
+      "ads/Domship.jpg",
     ],
     текст_под_ними: [
-      "Реклама 1 · Наш Telegram канал",
-      "Реклама 2 · Свежие мемы и гифки",
-      "Реклама 3 · Партнёрский сервис",
+      "Паразиты 1 W DD",
+      "Скала бога",
+      "дом шип - говна",
     ],
     ссылки: [
       "https://github.com/mihalo123890-hue/Coch-Site-V2",
@@ -27,14 +27,14 @@ export const DEFAULT_ADS_RAW: AdsConfigRaw = {
   },
   справа: {
     картинки: [
-      "ads/right-1.svg",
-      "ads/right-2.svg",
-      "ads/right-3.svg",
+      "ads/SVO.jpg",
+      "ads/SVO2.webp",
+      "ads/SVO3.png",
     ],
     текст_под_ними: [
-      "Реклама 1 · Официальный чат",
-      "Реклама 2 · Школьный мерч и стикеры",
-      "Реклама 3 · Спонсор опросника",
+      "Служба по контракту в вооруженных силах РФ",
+      "Заключи контракт с Минобороны",
+      "Целевой набор в спец разделения операторов БПЛА",
     ],
     ссылки: [
       "https://github.com/mihalo123890-hue/Coch-Site-V2",
