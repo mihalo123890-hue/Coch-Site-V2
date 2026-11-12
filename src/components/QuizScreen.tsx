@@ -89,10 +89,6 @@ export default function QuizScreen({ questions, onFinish }: Props) {
             </svg>
           </button>
         </div>
-
-        <p className="mt-3 text-xs text-stone-400 dark:text-stone-600">
-          Enter — дальше · Shift + Enter — новая строка
-        </p>
       </div>
     </div>
   );

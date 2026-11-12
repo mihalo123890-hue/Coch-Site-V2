@@ -8,12 +8,10 @@ interface Props {
   index: number;
 }
 
-export default function AdCard({ slot, side, index }: Props) {
+export default function AdCard({ slot }: Props) {
   const [hasError, setHasError] = useState(false);
   const resolvedMedia = resolveMediaUrl(slot.image);
   const isVideo = isVideoUrl(resolvedMedia);
-  const sideLabel = side === "left" ? "Слева" : "Справа";
-  const numLabel = `${sideLabel} #${index + 1}`;
 
   const imageLink = slot.imageLink || slot.link;
   const textLink = slot.textLink || slot.link;
@@ -24,7 +22,7 @@ export default function AdCard({ slot, side, index }: Props) {
       <div className="mb-2 flex items-center justify-between text-[10px] font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500">
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-stone-400 dark:bg-stone-500" />
-          Реклама · {numLabel}
+          Реклама
         </span>
         {(imageLink || textLink) && (
           <svg
@@ -58,7 +56,7 @@ export default function AdCard({ slot, side, index }: Props) {
             isVideo={isVideo}
             hasError={hasError}
             onError={() => setHasError(true)}
-            alt={slot.text || `Реклама ${numLabel}`}
+            alt={slot.text || "Реклама"}
           />
         </a>
       ) : (
@@ -68,7 +66,7 @@ export default function AdCard({ slot, side, index }: Props) {
             isVideo={isVideo}
             hasError={hasError}
             onError={() => setHasError(true)}
-            alt={slot.text || `Реклама ${numLabel}`}
+            alt={slot.text || "Реклама"}
           />
         </div>
       )}
@@ -82,11 +80,11 @@ export default function AdCard({ slot, side, index }: Props) {
           title={`Открыть ссылку: ${textLink}`}
           className="mt-2.5 block text-xs font-medium leading-snug text-stone-700 transition hover:text-stone-950 hover:underline dark:text-stone-300 dark:hover:text-stone-100"
         >
-          {slot.text || `Место под рекламу ${index + 1}`}
+          {slot.text || "Реклама"}
         </a>
       ) : (
         <p className="mt-2.5 text-xs font-medium leading-snug text-stone-600 dark:text-stone-400">
-          {slot.text || `Место под рекламу ${index + 1}`}
+          {slot.text || "Реклама"}
         </p>
       )}
     </article>
