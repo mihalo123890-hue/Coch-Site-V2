@@ -3,13 +3,13 @@
 **Коч-опрос** — школьный опрос в стиле тетрадного листа (светлая тема) и школьной доски (тёмная тема).
 23 вопроса идут в случайном порядке, в конце собирается ведомость «вопрос — ответ» с твоей подписью — её можно скопировать или скачать `.txt`-файлом.
 
-🌐 После публикации сайт откроется по адресу: **https://mihalo123890-hue.github.io/Coch-Site-V2/**
+🌐 Сайт: **https://mihalo123890-hue.github.io/Coch-Site-V2/**
 
 ## Что внутри
 
 - React 19 + TypeScript + Vite 7
 - Tailwind CSS 4 (через `@tailwindcss/vite`)
-- `vite-plugin-singlefile` — сборка в один самодостаточный `index.html` (идеально для GitHub Pages)
+- `vite-plugin-singlefile` — вся сборка (JS + CSS) инлайнится в один `docs/index.html`
 - Тёмная/светлая тема (сохраняется в `localStorage`, ключ `coch-theme`)
 - Перемешивание вопросов криптографическим ГСЧ (`crypto.getRandomValues`, Fisher–Yates)
 
@@ -18,30 +18,39 @@
 ```bash
 npm install        # установить зависимости
 npm run dev        # dev-сервер
-npm run build      # production-сборка в dist/ (base = /Coch-Site-V2/)
+npm run build      # сборка в docs/ (основа для GitHub Pages)
 npm run preview    # локальный просмотр сборки
 npm run typecheck  # проверка типов (tsc --noEmit)
 ```
 
 > Локальная сборка для превью с корневым base: `BASE_PATH=/ npm run build`
 
-## GitHub Pages
+## GitHub Pages — как это устроено
 
-Сайт публикуется автоматически из ветки через **GitHub Actions**:
+Сайт публикуется через **Deploy from a branch** (без GitHub Actions):
 
-- workflow: [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
-- срабатывает на `push` в `main` и на ручной запуск (`workflow_dispatch`)
-- шаги: `npm ci` → `npm run build` → загрузка `dist/` в Pages
-- в `vite.config.ts` задан `base: "/Coch-Site-V2/"` — обязательно для project-site Pages
+- **Ветка:** `main` · **Папка:** `/docs`
+- Источник — готовый собранный файл `docs/index.html` (весь CSS/JS внутри, внешних ассетов нет — только Google Fonts)
+- Пустой `docs/.nojekyll` отключает обработку Jekyll, чтобы GitHub отдавал файлы как есть
 
-### Как включить (один раз)
+Настройка (один раз): **Settings → Pages → Build and deployment → Source: Deploy from a branch**,
+**Branch: `main`**, **Folder: `/docs`** → **Save**. Через ~минуту сайт обновится.
 
-В репозитории: **Settings → Pages → Build and deployment → Source: GitHub Actions** → сохранить.
-После этого мёрдж в `main` сам опубликует сайт на `https://mihalo123890-hue.github.io/Coch-Site-V2/`.
+### Почему раньше была белая страница
 
-> Примечание: включить Pages через API может только токен с админ-правами на Pages
-> (у обычного Actions-токена их нет: `gh api …/pages -X POST` вернёт `403 Resource not accessible`),
-> поэтому надёжный путь — переключить Source в настройках репозитория вручную.
+Pages отдавал корень репозитория, а там лежит «сырой» `index.html` для разработки:
+в нём `<script type="module" src="/src/main.tsx">` — TypeScriptX браузер исполнить не может,
+поэтому React не запускался и страница оставалась пустой. Теперь Pages отдаёт из `/docs`
+уже собранный самодостаточный файл — страница работает сразу.
+
+### После изменения сайта
+
+```bash
+npm run build          # пересобрать docs/
+git add docs/ && git commit -m "Rebuild" && git push
+```
+
+(Пуш в `main` сам обновит Pages — сборка в CI не нужна.)
 
 ## Вопросы
 
@@ -51,18 +60,21 @@ npm run typecheck  # проверка типов (tsc --noEmit)
 ## Структура
 
 ```
+docs/                    # ← готовая сборка, которую отдаёт GitHub Pages
+  index.html             #    один самодостаточный файл
+  .nojekyll              #    отключение Jekyll
 src/
-  App.tsx                  # переключение экранов: старт → опрос → ведомость
+  App.tsx                # переключение экранов: старт → опрос → ведомость
   main.tsx
-  index.css                # дизайн-система «Тетрадь / Доска»
-  data/questions.ts        # список вопросов
-  hooks/useTheme.ts        # светлая / тёмная тема
+  index.css              # дизайн-система «Тетрадь / Доска»
+  data/questions.ts      # список вопросов
+  hooks/useTheme.ts      # светлая / тёмная тема
   components/
-    StartScreen.tsx        # стартовый экран (форма «Подпись»)
-    QuizScreen.tsx         # экран вопроса («билет» + прогресс-маркер)
-    ResultScreen.tsx       # ведомость «вопрос — ответ» + печать «ЗАЧЁТ»
-    ThemeToggle.tsx        # переключатель темы
-    Doodles.tsx            # рукописные SVG-декорации
-  utils/shuffle.ts         # Fisher–Yates на криптостойком ГСЧ
-  utils/cn.ts              # clsx + tailwind-merge
+    StartScreen.tsx      # стартовый экран (форма «Подпись»)
+    QuizScreen.tsx       # экран вопроса («билет» + прогресс-маркер)
+    ResultScreen.tsx     # ведомость «вопрос — ответ» + печать «ЗАЧЁТ»
+    ThemeToggle.tsx      # переключатель темы
+    Doodles.tsx          # рукописные SVG-декорации
+  utils/shuffle.ts       # Fisher–Yates на криптостойком ГСЧ
+  utils/cn.ts            # clsx + tailwind-merge
 ```
