@@ -1,0 +1,387 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ───────────────────────────────────────────────────────────
+   КОЧ-ОПРОС · тема «Тетрадь» (светлая) и «Доска» (тёмная)
+   ─────────────────────────────────────────────────────────── */
+
+:root {
+  --paper: #f8f4ea;
+  --panel: #fffdf4;
+  --panel-2: #f1ecdd;
+  --ink: #26304a;
+  --ink-soft: rgba(38, 48, 74, 0.64);
+  --ink-faint: rgba(38, 48, 74, 0.18);
+  --pen-red: #cf4444;
+  --pen-blue: #2f5fd0;
+  --hl: #ffe066;
+  --hl-strong: #ffd43b;
+  --rule: rgba(96, 125, 165, 0.4);
+  --margin-red: rgba(207, 68, 68, 0.55);
+  --shadow: rgba(38, 48, 74, 0.9);
+  --shadow-soft: rgba(38, 48, 74, 0.16);
+}
+
+html.dark {
+  --paper: #16241f;
+  --panel: #1e302a;
+  --panel-2: #243a32;
+  --ink: #f2efe0;
+  --ink-soft: rgba(242, 239, 224, 0.68);
+  --ink-faint: rgba(242, 239, 224, 0.16);
+  --pen-red: #ff9b9b;
+  --pen-blue: #9fd0ff;
+  --hl: #ffd43b;
+  --hl-strong: #ffe066;
+  --rule: rgba(242, 239, 224, 0.13);
+  --margin-red: rgba(255, 155, 155, 0.28);
+  --shadow: rgba(0, 0, 0, 0.55);
+  --shadow-soft: rgba(0, 0, 0, 0.35);
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: "Rubik", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--paper);
+  color: var(--ink);
+  transition: background-color 0.35s ease, color 0.35s ease;
+
+  /* тетрадные линейки */
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 33px,
+      var(--rule) 33px 34px
+    );
+}
+
+/* красные поля тетради — только на широких экранах */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 56px;
+  width: 5px;
+  border-left: 1.5px solid var(--margin-red);
+  border-right: 1.5px solid var(--margin-red);
+  pointer-events: none;
+  z-index: 0;
+}
+@media (max-width: 719px) {
+  body::before {
+    display: none;
+  }
+}
+
+/* тёмная тема — школьная доска: виньетка и меловая пыль */
+html.dark body {
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(242, 239, 224, 0.07), transparent 60%),
+    radial-gradient(ellipse 60% 45% at 15% 110%, rgba(242, 239, 224, 0.05), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 90% 105%, rgba(255, 212, 59, 0.05), transparent 55%),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 33px,
+      var(--rule) 33px 34px
+    );
+}
+
+/* бумажное / меловое зерно поверх всего */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+::selection {
+  background: var(--hl);
+  color: #26304a;
+}
+
+:focus-visible {
+  outline: 3px solid var(--pen-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── типографика ─────────────────────────────────────────── */
+.hand {
+  font-family: "Caveat", "Rubik", cursive;
+}
+.kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* маркерная подсветка за текстом */
+.highlight {
+  background-image: linear-gradient(
+    transparent 52%,
+    var(--hl) 52%,
+    var(--hl-strong) 88%,
+    transparent 88%
+  );
+  padding: 0 0.12em;
+  border-radius: 2px;
+}
+
+/* ── карточки и кнопки ───────────────────────────────────── */
+.card {
+  background: var(--panel);
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  box-shadow:
+    7px 7px 0 var(--shadow-soft),
+    7px 7px 0 1.5px var(--ink);
+}
+
+.card-flat {
+  background: var(--panel);
+  border: 1.5px solid var(--ink-faint);
+  border-radius: 16px;
+}
+
+/* «билет» — вопрос с пунктирной внутренней рамкой */
+.ticket {
+  position: relative;
+  background: var(--panel);
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  box-shadow:
+    8px 8px 0 var(--shadow-soft),
+    8px 8px 0 1.5px var(--ink);
+}
+.ticket::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1.5px dashed var(--ink-faint);
+  border-radius: 11px;
+  pointer-events: none;
+}
+
+.btn-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.72rem 1.15rem;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.btn-ink:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.btn-ink:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.btn-primary {
+  background: var(--hl-strong);
+  color: #26304a;
+}
+html.dark .btn-primary {
+  background: var(--hl);
+  color: #16241f;
+}
+.btn-primary:hover {
+  background: var(--hl);
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.25rem;
+  width: 3.25rem;
+  flex-shrink: 0;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 4px 4px 0 var(--shadow-soft);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  cursor: pointer;
+}
+.btn-icon:hover {
+  transform: translate(-1px, -1px) rotate(-2deg);
+  box-shadow: 5px 5px 0 var(--shadow-soft);
+}
+.btn-icon:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--shadow-soft);
+}
+
+/* чип-плашка (кабинет, класс, форма) */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.28rem 0.75rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  box-shadow: 2.5px 2.5px 0 var(--shadow-soft);
+}
+
+/* поле ввода — как строка в тетради */
+.field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px dashed var(--ink-faint);
+  border-radius: 0;
+  padding: 0.65rem 0.15rem;
+  font-size: 1.05rem;
+  color: var(--ink);
+  transition: border-color 0.2s ease;
+}
+.field::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.6;
+}
+.field:focus {
+  outline: none;
+  border-bottom: 2px solid var(--pen-blue);
+}
+
+.answer-area {
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  border: 2px solid var(--ink-faint);
+  border-radius: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.answer-area:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow-soft);
+}
+
+/* ── прогресс «маркер» ───────────────────────────────────── */
+.meter-track {
+  background: var(--ink-faint);
+}
+.meter-fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--hl-strong) 0 9px,
+    #f5c344 9px 18px
+  );
+  border-right: 2px solid var(--ink);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── печать «ЗАЧЁТ» ──────────────────────────────────────── */
+.stamp {
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  color: var(--pen-red);
+  border: 4px double var(--pen-red);
+  border-radius: 14px;
+  padding: 0.15em 0.5em;
+  transform: rotate(-11deg);
+  letter-spacing: 0.08em;
+  opacity: 0.92;
+  text-shadow: 0 0 1px var(--pen-red);
+  animation: stamp-in 0.5s cubic-bezier(0.2, 1.7, 0.4, 1) 0.35s both;
+}
+
+/* ── декоративные дудлы ──────────────────────────────────── */
+.doodle {
+  color: var(--ink-soft);
+  opacity: 0.75;
+}
+.doodle-red {
+  color: var(--pen-red);
+}
+.doodle-blue {
+  color: var(--pen-blue);
+}
+
+/* ── анимации ────────────────────────────────────────────── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px) rotate(0.001deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fade-up 0.45s ease both;
+}
+
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-11deg) scale(2.1);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(-11deg) scale(0.92);
+  }
+  100% {
+    opacity: 0.92;
+    transform: rotate(-11deg) scale(1);
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--tilt, 0deg));
+  }
+}
+.float-soft {
+  animation: float-soft 4.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .stamp,
+  .float-soft {
+    animation: none !important;
+  }
+  .meter-fill {
+    transition: none;
+  }
+}
