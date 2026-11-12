@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Коч-опрос — школьный опрос: 23 вопроса в случайном порядке про школу, учителей и параллель. В конце — ведомость «вопрос — ответ» со своей подписью. Можно скопировать или скачать .txt."
+      content="Notes — опрос: вопросы в случайном порядке. В конце появится список «вопрос — ответ» с твоей подписью."
     />
-    <meta name="theme-color" content="#f8f4ea" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#182622" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0d0e" media="(prefers-color-scheme: dark)" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23f6f1e7'/%3E%3Cpath d='M30 74l6.5-24.5L66 20a8.5 8.5 0 0 1 12 12L48.5 61.5 24 68z' fill='%23ffd43b' stroke='%2322304a' stroke-width='5' stroke-linejoin='round'/%3E%3Cpath d='M58 28l12 12' stroke='%2322304a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23292524'/%3E%3Cpath d='M35 50 L46 61 L65 39' fill='none' stroke='%23fafaf9' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
     />
-    <title>Коч-опрос — школьный опрос</title>
+    <title>Notes — опрос</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script>
-      // до отрисовки выставляем тему, чтобы не было вспышки
       try {
-        if (localStorage.getItem("coch-theme") === "dark") {
+        const theme =
+          localStorage.getItem("notes-theme") || localStorage.getItem("coch-theme");
+        if (theme === "dark") {
           document.documentElement.classList.add("dark");
         }
       } catch (e) {}

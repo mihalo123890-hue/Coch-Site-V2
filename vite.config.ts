@@ -8,31 +8,30 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// https://vite.dev/config/
-// base — обязательно для GitHub Pages project-site:
-// сайт будет доступен по адресу https://<логин>.github.io/Coch-Site-V2/
-// (в песочнице/превью можно переопределить переменной окружения BASE_PATH=/)
-const base = process.env.BASE_PATH ?? "/Coch-Site-V2/";
+export default defineConfig(({ command }) => {
+  // Для продакшн сборки (GitHub Pages): /Coch-Site-V2/
+  // Для локального dev-сервера и превью: /
+  const base =
+    process.env.BASE_PATH ?? (command === "build" ? "/Coch-Site-V2/" : "/");
 
-// GitHub Pages публикует ветку "main" из папки "/docs",
-// поэтому сборка кладёт самодостаточный index.html именно туда.
-// (dist/ больше не используется; в репозитории хранится готовый результат.)
-export default defineConfig({
-  base,
-  build: {
-    outDir: "docs",
-  },
-  preview: {
-    // превью-хост песочницы отличается от localhost — разрешаем любые хосты
-    allowedHosts: true,
-  },
-  server: {
-    allowedHosts: true,
-  },
-  plugins: [react(), tailwindcss(), viteSingleFile()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
+  return {
+    base,
+    build: {
+      outDir: "docs",
     },
-  },
+    preview: {
+      host: "0.0.0.0",
+      allowedHosts: true,
+    },
+    server: {
+      host: "0.0.0.0",
+      allowedHosts: true,
+    },
+    plugins: [react(), tailwindcss(), viteSingleFile()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+      },
+    },
+  };
 });

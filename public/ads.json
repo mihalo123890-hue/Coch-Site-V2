@@ -1,0 +1,91 @@
+{
+  "_инструкция": "Настройки рекламы для сайта. Меняйте картинки, текст под ними и ссылки прямо в этом файле на GitHub!",
+  "слева": {
+    "картинки": [
+      "ads/left-1.svg",
+      "ads/left-2.svg",
+      "ads/left-3.svg"
+    ],
+    "текст_под_ними": [
+      "Реклама 1 · Наш Telegram канал",
+      "Реклама 2 · Свежие мемы и гифки",
+      "Реклама 3 · Партнёрский сервис"
+    ],
+    "ссылки": [
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2"
+    ],
+    "отдельные_ссылки_для_картинок": [
+      "",
+      "",
+      ""
+    ],
+    "отдельные_ссылки_для_текста": [
+      "",
+      "",
+      ""
+    ]
+  },
+  "справа": {
+    "картинки": [
+      "ads/right-1.svg",
+      "ads/right-2.svg",
+      "ads/right-3.svg"
+    ],
+    "текст_под_ними": [
+      "Реклама 1 · Официальный чат",
+      "Реклама 2 · Школьный мерч и стикеры",
+      "Реклама 3 · Спонсор опросника"
+    ],
+    "ссылки": [
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2"
+    ],
+    "отдельные_ссылки_для_картинок": [
+      "",
+      "",
+      ""
+    ],
+    "отдельные_ссылки_для_текста": [
+      "",
+      "",
+      ""
+    ]
+  },
+  "left": {
+    "images": [
+      "ads/left-1.svg",
+      "ads/left-2.svg",
+      "ads/left-3.svg"
+    ],
+    "texts": [
+      "Реклама 1 · Наш Telegram канал",
+      "Реклама 2 · Свежие мемы и гифки",
+      "Реклама 3 · Партнёрский сервис"
+    ],
+    "links": [
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2"
+    ]
+  },
+  "right": {
+    "images": [
+      "ads/right-1.svg",
+      "ads/right-2.svg",
+      "ads/right-3.svg"
+    ],
+    "texts": [
+      "Реклама 1 · Официальный чат",
+      "Реклама 2 · Школьный мерч и стикеры",
+      "Реклама 3 · Спонсор опросника"
+    ],
+    "links": [
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2",
+      "https://github.com/mihalo123890-hue/Coch-Site-V2"
+    ]
+  }
+}
