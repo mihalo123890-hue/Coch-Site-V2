@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Squiggle } from "./Doodles";
 
 interface Props {
   name: string;
@@ -48,87 +47,47 @@ export default function ResultScreen({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `коч-опрос — ${name}.txt`;
+    a.download = `опрос — ${name}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
-  const answered = answers.filter((a) => a.trim().length > 0).length;
-  const dateStr = new Date().toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const btn =
+    "cursor-pointer rounded-xl border border-stone-200 bg-white/70 px-4 py-2.5 text-sm text-stone-700 transition hover:border-stone-400 dark:border-stone-800 dark:bg-stone-900/60 dark:text-stone-300 dark:hover:border-stone-600";
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-5 py-16 sm:px-6 sm:py-20">
+    <div className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6 sm:py-20">
       <div className="fade-up">
-        {/* шапка ведомости */}
-        <div className="relative flex items-start justify-between gap-4">
-          <div>
-            <p className="kicker">Ведомость ответов</p>
-            <h1 className="hand mt-2 text-6xl font-bold leading-none text-[var(--ink)] sm:text-7xl">
-              Вопрос&nbsp;—<br />
-              <span className="highlight">ответ</span>
-            </h1>
-            <Squiggle className="doodle doodle-blue mt-4" />
-          </div>
-          <div className="stamp mt-2 shrink-0 select-none text-4xl sm:text-5xl" aria-hidden="true">
-            ЗАЧЁТ
-          </div>
-        </div>
+        <p className="mb-4 text-xs uppercase tracking-[0.3em] text-stone-400 dark:text-stone-500">
+          готово
+        </p>
+        <h1 className="text-3xl font-light tracking-tight text-stone-900 dark:text-stone-100 sm:text-4xl">
+          Вопрос — Ответ
+        </h1>
 
-        {/* мета: дата и счётчик */}
-        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs font-medium uppercase tracking-[0.18em] text-[var(--ink-soft)]">
-          <span>{dateStr}</span>
-          <span aria-hidden="true">·</span>
-          <span>
-            отвечено: {answered} из {questions.length}
-          </span>
-        </div>
-
-        {/* действия */}
-        <div className="mt-6 flex flex-wrap gap-3">
-          <button type="button" onClick={copy} className="btn-ink">
-            {copied ? (
-              <>
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M4.5 12.5l5 5L19.5 6" />
-                </svg>
-                Скопировано
-              </>
-            ) : (
-              <>
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="8" y="8" width="12" height="12" rx="2.5" />
-                  <path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4H6.5A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8" />
-                </svg>
-                Скопировать всё
-              </>
-            )}
+        <div className="mt-6 flex flex-wrap gap-2">
+          <button type="button" onClick={copy} className={btn}>
+            {copied ? "Скопировано ✓" : "Скопировать всё"}
           </button>
-          <button type="button" onClick={download} className="btn-ink">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 4v11M7.5 11 12 15.5 16.5 11" />
-              <path d="M4.5 19.5h15" />
-            </svg>
+          <button type="button" onClick={download} className={btn}>
             Скачать .txt
           </button>
         </div>
 
-        {/* список «вопрос — ответ» */}
-        <ol className="mt-8 divide-y divide-[var(--ink-faint)] border-y-2 border-[var(--ink)]">
+        <ol className="mt-10 divide-y divide-stone-200 dark:divide-stone-800/80">
           {questions.map((q, i) => (
-            <li key={i} className="flex gap-4 py-4 sm:gap-5">
-              <span className="hand w-8 shrink-0 select-none pt-0.5 text-right text-2xl font-semibold leading-none text-[var(--pen-blue)]">
-                {i + 1}.
+            <li key={i} className="flex gap-4 py-5">
+              <span className="w-6 shrink-0 pt-0.5 text-right text-xs tabular-nums text-stone-400 dark:text-stone-600">
+                {i + 1}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[13px] leading-relaxed text-[var(--ink-soft)]">
+                <p className="text-sm leading-relaxed text-stone-500 dark:text-stone-400">
                   {q}
                 </p>
-                <p className="mt-1.5 whitespace-pre-wrap break-words text-[15px] font-medium leading-relaxed text-[var(--ink)]">
-                  <span className="mr-2 font-normal text-[var(--pen-red)]">—</span>
+                <p className="mt-2 whitespace-pre-wrap break-words text-base text-stone-900 dark:text-stone-100">
+                  <span className="mr-2 text-stone-300 dark:text-stone-600">
+                    —
+                  </span>
                   {answers[i] || EMPTY}
                 </p>
               </div>
@@ -136,16 +95,9 @@ export default function ResultScreen({
           ))}
         </ol>
 
-        {/* подпись */}
-        <div className="mt-8 flex items-end justify-between gap-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink-soft)]">
-            Подпись
-            <span className="mt-1 block h-px w-28 bg-[var(--ink-faint)]" />
-          </p>
-          <p
-            className="hand max-w-[60%] break-words text-right text-4xl font-semibold leading-tight text-[var(--pen-blue)]"
-            style={{ transform: "rotate(-2deg)" }}
-          >
+        <div className="mt-10 border-t border-stone-200 pt-6 text-right dark:border-stone-800/80">
+          <p className="text-xs text-stone-400 dark:text-stone-500">Подпись</p>
+          <p className="mt-1 text-lg font-light italic text-stone-800 dark:text-stone-200">
             {name}
           </p>
         </div>
@@ -154,12 +106,12 @@ export default function ResultScreen({
           <button
             type="button"
             onClick={onRestart}
-            className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink-soft)] underline decoration-[var(--pen-red)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--ink)]"
+            className="cursor-pointer text-xs text-stone-400 underline-offset-4 transition hover:text-stone-700 hover:underline dark:text-stone-600 dark:hover:text-stone-300"
           >
             Пройти заново
           </button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

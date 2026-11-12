@@ -1,33 +1,40 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export type Theme = "light" | "dark";
 
-const STORAGE_KEY = "coch-theme";
+const STORAGE_KEY = "notes-theme";
 
 function readInitial(): Theme {
   try {
-    return localStorage.getItem(STORAGE_KEY) === "dark" ? "dark" : "light";
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("coch-theme");
+    if (saved === "light" || saved === "dark") return saved;
   } catch {
-    return "light";
+    // игнорируем ошибки доступа к storage
   }
+  return "light";
 }
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(readInitial);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    const root = document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
     try {
       localStorage.setItem(STORAGE_KEY, theme);
+      localStorage.setItem("coch-theme", theme);
     } catch {
-      /* localStorage может быть недоступен — не страшно */
+      // storage может быть недоступен
     }
   }, [theme]);
 
-  const toggle = useCallback(
-    () => setTheme((t) => (t === "light" ? "dark" : "light")),
-    []
-  );
+  const toggle = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   return { theme, toggle };
 }

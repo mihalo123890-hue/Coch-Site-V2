@@ -14,46 +14,46 @@ export default function ThemeToggle({ theme, onToggle, position }: Props) {
     <button
       type="button"
       onClick={onToggle}
-      aria-label={isDark ? "Включить светлую тему (тетрадь)" : "Включить тёмную тему (доска)"}
-      title={isDark ? "Светлая тема — тетрадь" : "Тёмная тема — доска"}
+      aria-label={isDark ? "Включить светлую тему" : "Включить тёмную тему"}
+      title={isDark ? "Светлая тема" : "Тёмная тема"}
       className={cn(
-        "fixed z-40 flex h-11 w-11 items-center justify-center rounded-xl border-2 transition-all duration-200",
-        "border-[var(--ink)] bg-[var(--panel)] text-[var(--ink)] shadow-[3px_3px_0_var(--ink)]",
-        "hover:-translate-y-0.5 hover:shadow-[4px_5px_0_var(--ink)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0_var(--ink)]",
-        position === "bottom-right" ? "bottom-5 right-5" : "right-4 top-4 sm:right-6 sm:top-6"
+        "fixed z-30 flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 cursor-pointer",
+        "border-stone-200 bg-white/80 text-stone-600 backdrop-blur hover:border-stone-300 hover:text-stone-900",
+        "dark:border-stone-800 dark:bg-stone-900/80 dark:text-stone-400 dark:hover:border-stone-700 dark:hover:text-stone-100",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60 shadow-xs",
+        position === "bottom-right" ? "bottom-5 right-5" : "right-5 top-5"
       )}
     >
       {isDark ? (
-        // луна — «доска выключена»
+        // луна
         <svg
-          width="19"
-          height="19"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.9"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
         >
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
-          <path d="M15.5 4.5h.01M18 8h.01M13.5 2.8h.01" strokeWidth="2.4" />
         </svg>
       ) : (
-        // солнце — «урок начался»
+        // солнце
         <svg
-          width="19"
-          height="19"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.9"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
         >
-          <circle cx="12" cy="12" r="4.2" />
-          <path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5 5l1.4 1.4M17.6 17.6 19 19M5 19l1.4-1.4M17.6 6.4 19 5" />
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21M5.64 5.64l1.06 1.06M17.3 17.3l1.06 1.06M5.64 18.36l1.06-1.06M17.3 6.7l1.06-1.06" />
         </svg>
       )}
     </button>

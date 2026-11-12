@@ -5,9 +5,6 @@ interface Props {
   onFinish: (answers: string[]) => void;
 }
 
-/** Псевдо-штрихкод из «типографии» */
-const BARS = [3, 1, 2, 1, 4, 1, 1, 2, 5, 1, 2, 2, 1, 3, 1, 1, 4, 2, 1, 2, 1, 3];
-
 export default function QuizScreen({ questions, onFinish }: Props) {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -40,39 +37,46 @@ export default function QuizScreen({ questions, onFinish }: Props) {
   };
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-2xl flex-col justify-center px-5 py-16 sm:px-6">
-      {/* прогресс-маркер сверху */}
-      <div
-        className="meter-track fixed left-0 right-0 top-0 z-30 h-2"
-        role="progressbar"
-        aria-valuenow={index}
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-label="Прогресс опроса"
-      >
-        <div className="meter-fill" style={{ width: `${progress}%` }} />
+    <div className="mx-auto flex w-full max-w-2xl flex-col justify-center px-4 py-16 sm:px-6 sm:py-20">
+      {/* прогресс */}
+      <div className="fixed left-0 right-0 top-0 z-30 h-0.5 bg-stone-200/60 dark:bg-stone-800/60">
+        <div
+          className="h-full bg-stone-500 transition-all duration-500 dark:bg-stone-400"
+          style={{ width: `${progress}%` }}
+        />
       </div>
 
       <div key={index} className="fade-up w-full">
-        {/* счётчик */}
-        <div className="flex items-end justify-between gap-4">
-          <p className="hand text-2xl leading-none text-[var(--ink-soft)]">
-            вопрос <span className="text-[var(--pen-blue)]">{index + 1}</span>
-            <span className="text-[var(--ink-soft)]"> из {total}</span>
-          </p>
-          <p className="kicker text-[10px]">Билет № {String(index + 1).padStart(2, "0")}</p>
-        </div>
+        <p className="mb-6 text-xs tabular-nums tracking-widest text-stone-400 dark:text-stone-500">
+          {index + 1} / {total}
+        </p>
 
-        {/* «билет» с вопросом */}
-        <section className="ticket mt-3 p-6 sm:p-8" style={{ transform: "rotate(-0.4deg)" }}>
-          <div className="flex items-start justify-between gap-6 pl-1">
-            <h2 className="text-xl font-medium leading-snug text-[var(--ink)] sm:text-2xl">
-              {questions[index]}
-            </h2>
+        <h2 className="text-xl font-light leading-relaxed text-stone-900 dark:text-stone-100 sm:text-2xl">
+          {questions[index]}
+        </h2>
+
+        <div className="mt-10 flex items-end gap-2">
+          <textarea
+            ref={inputRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={onKeyDown}
+            rows={1}
+            autoFocus
+            placeholder="Твой ответ…"
+            aria-label="Ответ"
+            className="max-h-48 min-h-[3rem] flex-1 resize-none rounded-xl border border-stone-200 bg-white/70 px-4 py-3 text-base text-stone-900 outline-none transition [field-sizing:content] placeholder:text-stone-300 focus:border-stone-400 dark:border-stone-800 dark:bg-stone-900/60 dark:text-stone-100 dark:placeholder:text-stone-600 dark:focus:border-stone-600"
+          />
+          <button
+            type="button"
+            onClick={submit}
+            aria-label={isLast ? "Завершить" : "Далее"}
+            title="Enter"
+            className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-stone-900 text-stone-50 transition hover:bg-stone-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400/60 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-stone-300"
+          >
             <svg
-              className="mt-1 hidden shrink-0 text-[var(--pen-red)] sm:block"
-              width="26"
-              height="26"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -81,70 +85,15 @@ export default function QuizScreen({ questions, onFinish }: Props) {
               strokeLinejoin="round"
               aria-hidden="true"
             >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M9.5 12.5l2 2 3.5-4" />
-            </svg>
-          </div>
-
-          {/* типографский низ билета */}
-          <div className="mt-6 flex items-end justify-between gap-4 pl-1 opacity-70">
-            <div className="flex h-6 items-end gap-[3px] text-[var(--ink)]" aria-hidden="true">
-              {BARS.map((w, i) => (
-                <span
-                  key={i}
-                  className="inline-block bg-current"
-                  style={{ width: `${w * 1.6}px`, height: i % 4 === 0 ? "100%" : "78%" }}
-                />
-              ))}
-            </div>
-            <p className="hand text-lg leading-none text-[var(--ink-soft)]">коч-опрос · 2026</p>
-          </div>
-        </section>
-
-        {/* ответ */}
-        <div className="mt-6 flex items-end gap-3">
-          <textarea
-            ref={inputRef}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onKeyDown={onKeyDown}
-            rows={1}
-            autoFocus
-            placeholder="Твой ответ… (или прочеркни, если «не знаю»)"
-            aria-label="Ответ"
-            className="answer-area max-h-48 min-h-[3.25rem] flex-1 resize-none px-4 py-3.5 text-base leading-relaxed text-[var(--ink)] placeholder:text-[var(--ink-soft)] [field-sizing:content]"
-          />
-          <button
-            type="button"
-            onClick={submit}
-            aria-label={isLast ? "Завершить и получить ведомость" : "Следующий вопрос"}
-            title={isLast ? "Завершить (Enter)" : "Дальше (Enter)"}
-            className="btn-icon"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              {isLast ? (
-                <path d="M4 12.5l5.2 5L20 6.5" />
-              ) : (
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              )}
+              <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </button>
         </div>
 
-        <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--ink-soft)]">
+        <p className="mt-3 text-xs text-stone-400 dark:text-stone-600">
           Enter — дальше · Shift + Enter — новая строка
         </p>
       </div>
-    </main>
+    </div>
   );
 }
